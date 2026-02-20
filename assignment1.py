@@ -169,6 +169,144 @@ else:
     else:
         print(f"there is no increment,your salary is {salary}")                    
 
+# 13.	Ask user to opt for courses for master degree based on the following  
+# L1 = [“HR”, “Finance”, “Marketing”, “DS”]
+# Based on above subject there are two different streams. For example- HR is having HR core and HR analytics and Marketing is having core and Marketing analytics. Analytics is the optional subject and having added extra fees. DS is not having analytics.
+# If fees for L1 is 2 lakhs for each course core subject having the same fees but analytics subject having 10% extra on 2 lakhs.
+# If student opts for hostel then 2 lakhs per year is added. For food monthly 2000 .
+# # Transportation charges 13000 per semester. Calculate the total annual cost based on selected service.  
+# User will enter values as subject, analytics(Y/N), Hostel (Y/N), food(How many months?), Transportation(semester/annual)
+
+# Sol'n:-
+class MastersCourse:
+    def __init__(self,subject,analytics,hostel,food_months,transport_type):
+        self.subject = subject
+        self.analytics = analytics.upper()
+        self.hostel = hostel.upper()
+        self.food_months = food_months
+        self.transport_type = transport_type.lower()
+        self.base_fee = 200000
+
+    def course_fee(self):
+        fee = self.base_fee
+
+        if self.analytics == 'Y' and self.subject in ["HR","Finance","Marketing"]:
+            fee += self.base_fee*0.10
+
+        return fee
+    
+                
+    def hostel_fee(self):
+        if self.hostel == "Y":
+            return 200000
+        return 0
+    
+    def food_fee(self):
+        return self.food_months *2000
+    
+    def transport_fee(self):
+        if self.transport_type == "semester":
+            return 13000*2
+        elif self.transport_type == "annual":
+            return 13000
+        return 0
+    
+    def total_annual_cost(self):
+        return(
+            self.course_fee()
+            + self.hostel_fee()
+            + self.food_fee()
+            + self.transport_fee()
+        )
+
+subject = input("Enter subject (HR/Finance/Marketing?DS): ")
+analytics = input("Do you want analytics? (Y/N): ")
+hostel = input("Do you want hostel ? (Y/N): ")
+food_months = input(input("Enter number of months for food: "))
+transport = input("Transportion type (semester/annual: )")
+
+student = MastersCourse(subject,analytics,hostel,food_months,transport)
+
+print("Course Fee: ",student.course_fee())
+print("Hostel Fee: ",student.hostel_fee())
+print("Food Fee: ",student.food_fee())
+print("Transport Fee: ",student.transport_fee())
+print("Total Annual Cost: ",student.total_annual_cost())
+
+#14.
+class BookAlloment:
+    def __init__(self,standard,notebooks,pages):
+        self.standard = standard
+        self.notebooks  = notebooks
+        self.pages = pages
+
+
+        self.book_price ={"Hindi":[60,100,150],
+                          "Marathi":[60,100,150],
+                          "English":[80,100,150],
+                          "Science":[90,120,200],
+                          "Maths": [100,140,250],}
+        self.notebooks_prices = {
+            "square": [40,70],
+            "4lines":[30,50],
+            "2lines":[30,50],
+            "single lines": [60,100],
+            "A4 notebook": [100,180],
+        }
+        
+    def get_standard_index(self):
+        if self.standard in ["1st","2nd","3rd","4th"]:
+            return 0
+        elif self.standard in ["5th","6th","7th","8th"]:
+            return 1
+        elif self.standard in ["9th","10th"]:
+             return 2
+        else:
+            return -1
+        
+    def calculate_books_cost(self):
+        index = self.get_standard_index()
+        if index == -1:
+            return 0
+        
+        total = 0
+        for price in self.book_price.values():
+            total += price[index]
+        return total
+    
+    def calculate_notebook_cost(self):
+        page_index = 0 if self.pages == 100 else 1
+
+        total = 0
+        for nb in self.notebooks:
+            total += self.notebooks_prices[nb][page_index]
+        return total
+    
+    def total_cost(self):
+        return self.calculate_books_cost() + self.calculate_notebook_cost()
+    
+
+standard = input("Enter standard (1st–10th): ")
+
+n = int(input("How many notebook types do you want? "))
+notebooks = []
+for _ in range(n):
+    nb = input("Enter notebook type (square/4lines/2lines/single lines/A4 notebook): ")
+    notebooks.append(nb)
+
+pages = int(input("Enter pages (100 or 200): "))
+
+student = BookAlloment(standard, notebooks, pages)
+
+print("Total Books Cost:", student.calculate_books_cost())
+print("Total Notebook Cost:", student.calculate_notebook_cost())
+print("Total Amount to Pay:", student.total_cost())
+
+#16.
+string = """In most organized forms of writing, such as essays, paragraphs contain a topic sentence. 
+This topic sentence of the paragraph tells the reader what the paragraph will be about.
+Essays usually have multiple paragraphs that make claims to support a thesis statement,
+which is the central idea of the essay.  """                   
 
 
 #17.Create
@@ -302,7 +440,7 @@ for i in range(y):
    print(y_list) 
 
 
-#Then generate a new list based on all combination of x and y.
+#28.Then generate a new list based on all combination of x and y.
 # # # # For example: if x = 1 and y =2  then x_list = [0] and y_list = [0,1]
 # # # # And output will be [[0,0],[0,1]]
 # If x=2 and y = 2 then output will be [[0,0],[0,1][1,0],[1,1]]
@@ -521,23 +659,10 @@ def auto_password():
 auto_password()
 
 
-#51.Create a function to calculate age till now.
-from datetime import datetime
-
-def calculateAge(dob):
-    today = datetime.today().date()
-    birth_date = datetime.strptime(dob, "%d-%m-%Y").date()
-
-    age = today.year - birth_date.year
-
-    print("Your age is:", age)
 
 
-DOB = input("Enter date of birth (DD-MM-YYYY): ")
-calculateAge(DOB)
 
-
-#Q4,42,43.	Create a empty dictionary and ask user to enter values as name, DOB, mobile number add all the details in dictionary with customer number as 1 for first time. If user try to enter another value, then number should increase as 2 with new details and previous values should not change.
+#Q51,52,53.	Create a empty dictionary and ask user to enter values as name, DOB, mobile number add all the details in dictionary with customer number as 1 for first time. If user try to enter another value, then number should increase as 2 with new details and previous values should not change.
 # For example:
 # {}
 # {1:{name : "Sachin", "DOB": "21-06-1965" , "mobile": "1234123423"}}
@@ -588,7 +713,7 @@ while True:
         break
 
 
-#44Create a table  cust_info as sr_no, name, DOB, mobile. 
+#54Create a table  cust_info as sr_no, name, DOB, mobile. 
 # Ask user to enter the information from python code. Validate all fields and after validation insert records in the table.
 import pyodbc
 conn=pyodbc.connect(
@@ -614,6 +739,133 @@ while True:
         print("error: ",e)
 
     cursor.excute("INSERT INTO cust_info(name,dob,mobile)VALUES ?,?,?",name,dob,mobile)    
+
+# 55.	Dict1= {“Key”: {“subkey”:20} ,  “k2”:{“sub2” : 5}, “k3” : {“sub4” :16},  “k4” : {“sub4” : 6}}
+# Sort elements based on values
+# Output must be {,  “k2”:{“sub2” : 5}, “k4” : {“sub4” : 6},  “k3” : {“sub4” : 16}, “Key”:{“subkey”:20}}
+
+
+    Dict1 = {
+    "Key": {"subkey": 20},
+    "k2": {"sub2": 5},
+    "k3": {"sub4": 16},
+    "k4": {"sub4": 6}
+}
+
+sorted_dict = dict(
+    sorted(Dict1.items(), key=lambda x: list(x[1].values())[0])
+)
+
+print(sorted_dict)
+
+
+
+#56.Create a function to calculate age till now.
+from datetime import datetime
+
+def calculateAge(dob):
+    today = datetime.today().date()
+    birth_date = datetime.strptime(dob, "%d-%m-%Y").date()
+
+    age = today.year - birth_date.year
+
+    print("Your age is:", age)
+
+
+# Q57	Create a function to check age eligibility for given customer based on DOB. 
+# Function will take two input DOB and ELIGIBILITY age.
+DOB = input("Enter date of birth (DD-MM-YYYY): ")
+calculateAge(DOB)
+
+from datetime import datetime
+
+def check_eligibility(dob, eligibility_age):
+    # dob format: "YYYY-MM-DD"
+    dob_date = datetime.strptime(dob, "%Y-%m-%d")
+    today = datetime.today()
+
+    age = today.year - dob_date.year - (
+        (today.month, today.day) < (dob_date.month, dob_date.day)
+    )
+
+    if age >= eligibility_age:
+        return f"Eligible (Age: {age})"
+    else:
+        return f"Not Eligible (Age: {age})"
+
+print(check_eligibility("2000-05-10", 18))
+
+# Q58.	Create a function to check if string is palindrome or not ? 
+# For example, if input is NITIN then reverse of the string is same then it is palindrome. 
+# If input is ANIL then reverse is LINA which is not same then it is not palindrome.  
+
+def is_palindrome(s):
+    s = s.lower()
+    return s == s[::-1]
+
+print(is_palindrome("NITIN"))  # True
+print(is_palindrome("ANIL")) 
+
+#Q59.	Create a function to generate a Fibonacci Series.
+# 0 1 1 2 3 5 8 13 21 34 …..  upto 100 
+def fibonacci_upto_100():
+    a, b = 0, 1
+    
+    while a <= 100:
+        print(a, end=" ")
+        a, b = b, a + b
+
+fibonacci_upto_100()
+
+# 60.Write a code to generate factorial of the number 
+# For example: factorial of 5 = 5! = 5*4*3*2*1
+def factorial(n):
+    fact = 1
+    
+    for i in range(1, n+1):
+        fact *= i
+        
+    return fact
+
+print(factorial(5))
+
+# 61.	Write a program to find largest number in the list.
+lst = [10, 45, 67, 23, 89, 12]
+
+largest = lst[0]
+
+for num in lst:
+    if num > largest:
+        largest = num
+
+print("Largest:", largest)
+
+# 62.	There are two string l1 =[ 1,2,3,4,5] and l2 =[3,2,8,7,9]
+
+
+lst = [1,2,2,3,4,1,2,3]
+
+freq = {}
+
+for item in lst:
+    freq[item] = freq.get(item, 0) + 1
+
+print(freq)
+
+#Q63 then write a program to find common elements in the list.
+l1 = [1,2,3,4,5]
+l2 = [3,2,8,7,9]
+
+common = []
+
+for item in l1:
+    if item in l2:
+        common.append(item)
+
+print(common)
+
+
+
 
 
 
